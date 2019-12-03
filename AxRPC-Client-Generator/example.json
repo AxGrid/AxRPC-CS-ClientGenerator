@@ -4,6 +4,11 @@
     "correlationIdFieldName":"correlationId",
     "successFieldName":"success",
     "errorTextFieldName":"errorText",
+    "sessionFieldName":"session",
+    "requestObject":"Request",
+    "responseObject":"Response",
+    "requestObjectFullName":"com.axgrid.game.rpc.Request",
+    "responseObjectFullName":"com.axgrid.game.rpc.Response",
     "name":"AxGameDemoService",
     "fullName":"com.axgrid.game.rpc.service.AxGameDemoService",
     "methods":[
@@ -22,6 +27,11 @@
     "correlationIdFieldName":"correlationId",
     "successFieldName":"success",
     "errorTextFieldName":"errorText",
+    "sessionFieldName":"session",
+    "requestObject":"Request",
+    "responseObject":"Response",
+    "requestObjectFullName":"com.axgrid.game.rpc.Request",
+    "responseObjectFullName":"com.axgrid.game.rpc.Response",
     "name":"AxGameRPCService",
     "fullName":"com.axgrid.game.rpc.service.AxGameRPCService",
     "methods":[
