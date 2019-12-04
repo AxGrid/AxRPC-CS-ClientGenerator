@@ -25,7 +25,7 @@ namespace {{opt.service_ns}} {
        
 {{ for method in service.methods }}
         {{ if method.trx_required }}
-        public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ if !method.empty_request }}{{ method.request_name }} request,{{ end }} string trx) {
+        public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ if !method.empty_request }}{{ method.request_name }} request, {{ end }}string trx) {
         {{ else }}
         public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ if !method.empty_request }}{{ method.request_name }} request{{ end }}) {
         {{ end }}
@@ -45,12 +45,12 @@ namespace {{opt.service_ns}} {
         }
         
         {{ if method.trx_required }}
-        public static void {{ method.name | string.capitalize }}Async({{ method.request_name }} request, string trx, DAxRPCResult<{{ method.response_name }}> result, DAxRPCError error = null) {
+        public static void {{ method.name | string.capitalize }}Async({{ if !method.empty_request }}{{ method.request_name }} request, {{ end }}string trx, DAxRPCResult<{{ method.response_name }}> result, DAxRPCError error = null) {
             {{ method.name | string.capitalize }}(request, trx)
         {{ else }}
-        public static void {{ method.name | string.capitalize }}Async({{ method.request_name }} request, DAxRPCResult<{{ method.response_name }}> result, DAxRPCError error = null) {
-            {{ method.name | string.capitalize }}(request)
-        {{ end }}.SubscribeOnMainThread()
+        public static void {{ method.name | string.capitalize }}Async({{ if !method.empty_request }}{{ method.request_name }} request, {{ end }}DAxRPCResult<{{ method.response_name }}> result, DAxRPCError error = null) {
+            {{ method.name | string.capitalize }}({{ if !method.empty_request }}request{{ end }})
+        {{ end }}    .SubscribeOnMainThread()
                  .Subscribe(
                     _result => result?.Invoke(_result), 
                     _error => {
