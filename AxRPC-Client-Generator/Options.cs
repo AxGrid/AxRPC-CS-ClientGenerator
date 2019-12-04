@@ -26,6 +26,8 @@ namespace AxRPCClientGenerator {
         [Option("retryTimeout", Required = false, Default=200, HelpText = "Retry delay")]
         public int RetryTimeout { get; set; }
 
+        [Option("serviceName", Required = false, Default = "", HelpText = "Create single Service class")]
+        public string ServiceName { get; set; }
         
         public string JsonData { get; set; }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using AxRPCClientGenerator.Data;
 using Newtonsoft.Json;
 using SimpleLogger;
@@ -15,6 +16,16 @@ namespace AxRPCClientGenerator {
             var t = TemplateLoader.GetTemplate(GetServiceTemplate(o.Template));
             Services = JsonConvert.DeserializeObject<List<Service>> (o.JsonData);
             Logger.Debug.Log($"Found {Services.Count} service");
+
+            if (!string.IsNullOrEmpty(o.ServiceName) && Services.Count > 0) {
+                var methods = Services.SelectMany(item => item.Methods).ToList();
+                var s = Services[0];
+                s.Name = o.ServiceName;
+                s.Methods = methods;
+                Services = new List<Service>(new [] {s});
+            }
+
+
             Services.ForEach(service =>
             {
                 Logger.Log($"{service.ToString()}");
