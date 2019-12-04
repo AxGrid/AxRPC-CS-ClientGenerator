@@ -47,8 +47,8 @@ namespace {{opt.service_ns}} {
                  if (!response.Success)  throw new AxRPCException(response.ErrorText, response.ErrorCode);
                  return response.{{ method.response_name }};
              })
-             .OnErrorRetry((WWWErrorException ex) => Log.Warn("WWWErrorException:{}", ex), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}))
-             .OnErrorRetry((AxRPCRetryException ex) => Log.Warn(ex), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}));
+             .OnErrorRetry((WWWErrorException ex) => Log.Warn("WWWErrorException:{}", ex.Message), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}))
+             .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}));
         }
         
         {{ if method.trx_required }}
