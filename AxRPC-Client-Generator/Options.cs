@@ -20,6 +20,13 @@ namespace AxRPCClientGenerator {
         [Option('o', "output", Required = false, HelpText = "Output folder")]
         public string Output { get; set; }
         
+        [Option("retryCount", Required = false, Default=10, HelpText = "Generate Retry count")]
+        public int RetryCount { get; set; }
+
+        [Option("retryTimeout", Required = false, Default=200, HelpText = "Retry delay")]
+        public int RetryTimeout { get; set; }
+
+        
         public string JsonData { get; set; }
 
         public enum Templates {

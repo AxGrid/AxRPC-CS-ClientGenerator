@@ -16,6 +16,10 @@ namespace {{opt.service_ns}} {
         public int Code { get; set; }
         public AxRPCException(string message, int code) : base($"{message}({code})") { Code = code; }
     }
+    
+    public class AxRPCRetryException : AxRPCException {
+        public AxRPCRetryException(string message, int code) : base(message, code) {}
+    }
 
     public delegate void DAxRPCError(AxRPCException error);
     public delegate void DAxRPCResult<T>(T result);
@@ -39,9 +43,12 @@ namespace {{opt.service_ns}} {
             return ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url, r.ToByteArray(), new Dictionary<string, string> { {"Content-Type", "application/octet-stream"} })
              .Select(bytes => {
                  var response = {{ service.response_object }}.Parser.ParseFrom(bytes);
-                 if (!response.Success) throw new AxRPCException(response.ErrorText, response.ErrorCode);
+                 if (!response.Success && response.ErrorCode >= 500) throw new AxRPCRetryException(response.ErrorText, response.ErrorCode);
+                 if (!response.Success)  throw new AxRPCException(response.ErrorText, response.ErrorCode);
                  return response.{{ method.response_name }};
-             });
+             })
+             .OnErrorRetry((WWWErrorException ex) => Log.Warn("WWWErrorException:{}", ex), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}))
+             .OnErrorRetry((AxRPCRetryException ex) => Log.Warn(ex), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}));
         }
         
         {{ if method.trx_required }}
@@ -54,9 +61,9 @@ namespace {{opt.service_ns}} {
                  .Subscribe(
                     _result => result?.Invoke(_result), 
                     _error => {
-                        if (_error is WWWErrorException wwwError) error?.Invoke(new AxRPCException(wwwError.RawErrorMessage, (int)wwwError.StatusCode));
+                        if (_error is WWWErrorException wwwError) error?.Invoke(new AxRPCRetryException(wwwError.RawErrorMessage, (int)wwwError.StatusCode));
                         else if (_error is AxRPCException axError) error?.Invoke(axError);
-                        else error?.Invoke(new AxRPCException(_error.Message, 515));
+                        else error?.Invoke(new AxRPCRetryException(_error.Message, 515));
                 });
         }{{ end }}
     }{{ end }}
