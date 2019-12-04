@@ -20,19 +20,23 @@ namespace {{opt.service_ns}} {
     public delegate void DAxRPCError(AxRPCException error);
     public delegate void DAxRPCResult<T>(T result);
 
-    {{ for service in services }}
+{{ for service in services }}
     public class {{service.name}} {
        
 {{ for method in service.methods }}
+        {{ if method.trx_required }}
+        public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ method.request_name }} request, string trx) {
+        {{ else }}
         public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ method.request_name }} request) {
+        {{ end }}
             var r = new {{ service.request_object }} {
-                {{ if service.session_field_name && service.session_field_name != "" }}{{ service.session_field_name | string.capitalize }} = AxServiceConfigurations.Session,{{ end }}
+                {{ if method.login_required && service.session_field_name && service.session_field_name != "" }}{{ service.session_field_name | string.capitalize }} = AxServiceConfigurations.Session != null ? AxServiceConfigurations.Session : "",{{ end }}
                 {{ if service.correlation_id_field_name && service.correlation_id_field_name != "" }}{{ service.correlation_id_field_name | string.capitalize }} = AxServiceConfigurations.CorrelationId++,{{ end }}
-                {{ method.request_name }} = request  
+                {{ if method.trx_required && service.trx_field_name }}{{ service.trx_field_name | string.capitalize }} = trx,{{ end }}
+                {{ method.request_name }} = request
             };
 
-            return ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url, r.ToByteArray(),
-                 new Dictionary<string, string> {{"Content-Type", "application/octet-stream"}})
+            return ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url, r.ToByteArray(), new Dictionary<string, string> { {"Content-Type", "application/octet-stream"} })
              .Select(bytes => {
                  var response = {{ service.response_object }}.Parser.ParseFrom(bytes);
                  if (!response.Success) throw new AxRPCException(response.ErrorText, response.ErrorCode);
@@ -40,26 +44,20 @@ namespace {{opt.service_ns}} {
              });
         }
         
+        {{ if method.trx_required }}
+        public static void {{ method.name | string.capitalize }}Async({{ method.request_name }} request, string trx, DAxRPCResult<{{ method.response_name }}> result, DAxRPCError error = null) {
+            {{ method.name | string.capitalize }}(request, trx)
+        {{ else }}
         public static void {{ method.name | string.capitalize }}Async({{ method.request_name }} request, DAxRPCResult<{{ method.response_name }}> result, DAxRPCError error = null) {
-            var r = new {{ service.request_object }} {
-                {{ if service.session_field_name && service.session_field_name != "" }}{{ service.session_field_name | string.capitalize }} = AxServiceConfigurations.Session,{{ end }}
-                {{ if service.correlation_id_field_name && service.correlation_id_field_name != "" }}{{ service.correlation_id_field_name | string.capitalize }} = AxServiceConfigurations.CorrelationId++,{{ end }}
-                {{ method.request_name }} = request  
-            };
-            ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url, r.ToByteArray(), new Dictionary<string, string>{ {"Content-Type", "application/octet-stream" }})
-                 
-                 .SubscribeOnMainThread()
-                 .Subscribe(_result => {
-                     var response = {{ service.response_object }}.Parser.ParseFrom(_result);
-                     {{ if service.success_field_name && service.success_field_name != "" }}if (!response.{{ service.success_field_name | string.capitalize }}) error?.Invoke(new AxRPCException({{ if service.error_text_field_name && service.error_text_field_name != "" }}response.{{ service.error_text_field_name | string.capitalize }}{{ else }}"AxRpcError"{{ end }}, {{ if service.error_code_field_name && service.error_code_field_name != "" }}response.{{ service.error_code_field_name | string.capitalize }}{{ else }}501{{ end }}));{{ end }}
-                     result?.Invoke(response.{{ method.response_name }});
-                     
-                 }, _error => {
-                    if (_error is WWWErrorException wwwError) error?.Invoke(new AxRPCException(wwwError.RawErrorMessage, (int)wwwError.StatusCode));
-                    else error?.Invoke(new AxRPCException(_error.Message, 515));
-                 });
-        }
-{{ end }}
-    } 
-    {{ end }}
+            {{ method.name | string.capitalize }}(request)
+        {{ end }}.SubscribeOnMainThread()
+                 .Subscribe(
+                    _result => result?.Invoke(_result), 
+                    _error => {
+                        if (_error is WWWErrorException wwwError) error?.Invoke(new AxRPCException(wwwError.RawErrorMessage, (int)wwwError.StatusCode));
+                        else if (_error is AxRPCException axError) error?.Invoke(axError);
+                        else error?.Invoke(new AxRPCException(_error.Message, 515));
+                });
+        }{{ end }}
+    }{{ end }}
 }

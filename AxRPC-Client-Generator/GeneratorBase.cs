@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using AxRPCClientGenerator.Data;
 using Newtonsoft.Json;
 using SimpleLogger;
@@ -16,15 +17,18 @@ namespace AxRPCClientGenerator {
             Logger.Debug.Log($"Found {Services.Count} service");
             Services.ForEach(service =>
             {
-                Logger.Debug.Log($"{service.ToString()}");
+                Logger.Log($"{service.ToString()}");
             });
             
             var str = t.Render(new {
                 Services,
                 Opt = o
             });
-            
-            Logger.Log(str);
+            Logger.Debug.Log(str);
+            if (string.IsNullOrEmpty(o.Output)) return;
+            using (var sw = new StreamWriter(o.Output)) {
+                sw.Write(str);
+            }
         }
         
     }

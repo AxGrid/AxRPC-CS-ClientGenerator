@@ -7,6 +7,8 @@ namespace AxRPCClientGenerator.Data {
         public string SuccessFieldName { get; set; }
         public string ErrorTextFieldName { get; set; }
         
+        public string TrxFieldName { get; set; }
+        
         public string SessionFieldName { get; set; }
         
         public string Name { get; set; }
@@ -22,7 +24,7 @@ namespace AxRPCClientGenerator.Data {
 
         public override string ToString() {
             return
-                $"{Name} ({ErrorCodeFieldName} / {CorrelationIdFieldName} / {SuccessFieldName} / {ErrorTextFieldName}) Methods:{Methods.Count}";
+                $"{Name} ({ErrorCodeFieldName} / {CorrelationIdFieldName} / {SuccessFieldName} / {ErrorTextFieldName} / {TrxFieldName}) Methods:{Methods.Count}";
         }
     }
 }

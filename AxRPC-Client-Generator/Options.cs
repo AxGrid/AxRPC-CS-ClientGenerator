@@ -17,6 +17,8 @@ namespace AxRPCClientGenerator {
         [Option('s', "serviceNs", Required = false, Default = "AxGrid.Internal", HelpText = "Default service namespace")]
         public string ServiceNs { get; set; }
 
+        [Option('o', "output", Required = false, HelpText = "Output folder")]
+        public string Output { get; set; }
         
         public string JsonData { get; set; }
 

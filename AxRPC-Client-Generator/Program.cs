@@ -11,10 +11,14 @@ namespace AxRPCClientGenerator {
             Logger.LoggerHandlerManager
                   .AddHandler(new ConsoleLoggerHandler());
             Logger.DefaultLevel = Logger.Level.Info;
+            Logger.DebugOff();
+            
             Parser.Default.ParseArguments<Options>(args).WithParsed(o => {
-                if (o.Verbose) Logger.DefaultLevel = Logger.Level.Debug;
+                if (o.Verbose) Logger.DebugOn();
                 if (o.Json.StartsWith("http")) {
                     Logger.Log($"Loading json from HTTP {o.Json}");
+                    o.JsonData = Utils.GetFromHttp(o.Json);
+                    new GeneratorBase(o);
                 }
                 else {
                     Logger.Log($"Loading json from {o.Json}");
