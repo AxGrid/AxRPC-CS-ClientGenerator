@@ -9,6 +9,7 @@ namespace AxRPCClientGenerator.Data {
        
         public bool LoginRequired { get; set; }
         public bool TrxRequired { get; set; }
+        public bool EmptyRequest { get; set; }
 
     }
 }

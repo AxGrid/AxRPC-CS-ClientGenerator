@@ -25,15 +25,15 @@ namespace {{opt.service_ns}} {
        
 {{ for method in service.methods }}
         {{ if method.trx_required }}
-        public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ method.request_name }} request, string trx) {
+        public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ if !method.empty_request }}{{ method.request_name }} request,{{ end }} string trx) {
         {{ else }}
-        public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ method.request_name }} request) {
+        public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ if !method.empty_request }}{{ method.request_name }} request{{ end }}) {
         {{ end }}
             var r = new {{ service.request_object }} {
                 {{ if method.login_required && service.session_field_name && service.session_field_name != "" }}{{ service.session_field_name | string.capitalize }} = AxServiceConfigurations.Session != null ? AxServiceConfigurations.Session : "",{{ end }}
                 {{ if service.correlation_id_field_name && service.correlation_id_field_name != "" }}{{ service.correlation_id_field_name | string.capitalize }} = AxServiceConfigurations.CorrelationId++,{{ end }}
                 {{ if method.trx_required && service.trx_field_name }}{{ service.trx_field_name | string.capitalize }} = trx,{{ end }}
-                {{ method.request_name }} = request
+                {{ method.request_name }} = {{ if method.empty_request }}new {{ method.request_name }}(){{ else }}request{{ end }}
             };
 
             return ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url, r.ToByteArray(), new Dictionary<string, string> { {"Content-Type", "application/octet-stream"} })

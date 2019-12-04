@@ -21,7 +21,18 @@
         "responseFullName":"com.axgrid.game.rpc.RpPing",
         "responseName":"RpPing",
         "loginRequired":false,
-        "trxRequired":false
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"serverTime",
+        "requestFullName":"com.axgrid.game.rpc.OpServerTime",
+        "requestName":"OpServerTime",
+        "responseFullName":"com.axgrid.game.rpc.RpServerTime",
+        "responseName":"RpServerTime",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":true
       }
     ]
   },
@@ -41,13 +52,24 @@
     "responseObjectFullName":"com.axgrid.game.rpc.Response",
     "methods":[
       {
+        "name":"valid",
+        "requestFullName":"com.axgrid.game.rpc.OpAuthValid",
+        "requestName":"OpAuthValid",
+        "responseFullName":"com.axgrid.game.rpc.RpAuthValid",
+        "responseName":"RpAuthValid",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
         "name":"uuid",
         "requestFullName":"com.axgrid.game.rpc.OpAuthNew",
         "requestName":"OpAuthNew",
         "responseFullName":"com.axgrid.game.rpc.RpAuthNew",
         "responseName":"RpAuthNew",
         "loginRequired":false,
-        "trxRequired":false
+        "trxRequired":false,
+        "emptyRequest":false
       },
       {
         "name":"auth",
@@ -56,16 +78,8 @@
         "responseFullName":"com.axgrid.game.rpc.RpAuthUuid",
         "responseName":"RpAuthUuid",
         "loginRequired":false,
-        "trxRequired":false
-      },
-      {
-        "name":"valid",
-        "requestFullName":"com.axgrid.game.rpc.OpAuthValid",
-        "requestName":"OpAuthValid",
-        "responseFullName":"com.axgrid.game.rpc.RpAuthValid",
-        "responseName":"RpAuthValid",
-        "loginRequired":false,
-        "trxRequired":false
+        "trxRequired":false,
+        "emptyRequest":false
       }
     ]
   },
@@ -91,7 +105,8 @@
         "responseFullName":"com.axgrid.game.rpc.RpUser",
         "responseName":"RpUser",
         "loginRequired":true,
-        "trxRequired":false
+        "trxRequired":false,
+        "emptyRequest":false
       }
     ]
   },
@@ -117,7 +132,8 @@
         "responseFullName":"com.axgrid.game.rpc.RpKv",
         "responseName":"RpKv",
         "loginRequired":true,
-        "trxRequired":true
+        "trxRequired":true,
+        "emptyRequest":false
       }
     ]
   }
