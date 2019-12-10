@@ -2,6 +2,7 @@
 using Google.Protobuf;
 using UniRx;
 using System.Collections.Generic;
+using System;
 {{ if opt.protobuf_ns && opt.protobuf_ns != "" }}using {{ opt.protobuf_ns }};{{ end }}
 
 namespace {{opt.service_ns}} {
