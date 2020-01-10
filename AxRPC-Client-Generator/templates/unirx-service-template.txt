@@ -27,7 +27,6 @@ namespace {{opt.service_ns}} {
 
 {{ for service in services }}
     public class {{service.name}} {
-       
 {{ for method in service.methods }}
         /// <summary>
         /// {{ method.description }}{{ if service.description != "Common Service" }} ({{ service.description }}){{ end }}
@@ -42,7 +41,6 @@ namespace {{opt.service_ns}} {
                 {{ if method.trx_required && service.trx_field_name }}{{ service.trx_field_name | string.capitalize }} = trx,{{ end }}
                 {{ method.request_name }} = {{ if method.empty_request }}new {{ method.request_name }}(){{ else }}request{{ end }}
             };
-
             return ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url, r.ToByteArray(), new Dictionary<string, string> { {"Content-Type", "application/octet-stream"} })
              .Select(bytes => {
                  var response = {{ service.response_object }}.Parser.ParseFrom(bytes);
