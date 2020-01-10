@@ -19,6 +19,7 @@ namespace AxRPCClientGenerator.Data {
 
         public string RequestObjectFullName { get; set; }
         public string ResponseObjectFullName { get; set; }
+        public string Description { get; set; }
 
         public List<Method> Methods { get; set; }
 

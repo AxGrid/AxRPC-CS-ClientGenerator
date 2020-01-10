@@ -7,6 +7,7 @@ using SimpleLogger;
 
 namespace AxRPCClientGenerator {
     public class GeneratorBase {
+        
         protected static string GetServiceTemplate(Options.Templates template) => $"{template.ToString().ToLower()}-service-template.txt";
 
         protected List<Service> Services { get; set; }

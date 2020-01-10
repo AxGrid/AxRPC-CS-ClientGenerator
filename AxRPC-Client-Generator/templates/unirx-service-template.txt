@@ -29,7 +29,9 @@ namespace {{opt.service_ns}} {
     public class {{service.name}} {
        
 {{ for method in service.methods }}
-        {{ if method.trx_required }}
+        /// <summary>
+        /// {{ method.description }}{{ if service.description != "Common Service" }} ({{ service.description }}){{ end }}
+        /// </summary>{{ if method.trx_required }}
         public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ if !method.empty_request }}{{ method.request_name }} request, {{ end }}string trx) {
         {{ else }}
         public static IObservable<{{ method.response_name }}> {{ method.name | string.capitalize }}({{ if !method.empty_request }}{{ method.request_name }} request{{ end }}) {
@@ -52,7 +54,9 @@ namespace {{opt.service_ns}} {
              .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}));
         }
         
-        {{ if method.trx_required }}
+        /// <summary>
+        /// {{ method.description }}{{ if service.description != "Common Service" }} ({{ service.description }}){{ end }} 
+        /// </summary>{{ if method.trx_required }}
         public static void {{ method.name | string.capitalize }}Async({{ if !method.empty_request }}{{ method.request_name }} request, {{ end }}string trx, DAxRPCResult<{{ method.response_name }}> result, DAxRPCError error = null) {
             {{ method.name | string.capitalize }}(request, trx)
         {{ else }}

@@ -6,7 +6,8 @@
     "errorTextFieldName":"errorText",
     "sessionFieldName":"session",
     "trxFieldName":"trx",
-    "name":"AxGameRPCCommon",
+    "metricsEnabled":true,
+    "name":"Common",
     "description":"Common Service",
     "fullName":"com.axgrid.game.rpc.service.AxGameRPCCommon",
     "requestObject":"Request",
@@ -15,22 +16,115 @@
     "responseObjectFullName":"com.axgrid.game.rpc.Response",
     "methods":[
       {
-        "name":"ping",
-        "requestFullName":"com.axgrid.game.rpc.OpPing",
-        "requestName":"OpPing",
-        "responseFullName":"com.axgrid.game.rpc.RpPing",
-        "responseName":"RpPing",
-        "loginRequired":false,
-        "trxRequired":false,
-        "emptyRequest":false
-      },
-      {
         "name":"serverTime",
         "requestFullName":"com.axgrid.game.rpc.OpServerTime",
         "requestName":"OpServerTime",
         "responseFullName":"com.axgrid.game.rpc.RpServerTime",
         "responseName":"RpServerTime",
+        "description":"Получить текущее время сервера",
         "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":true
+      },
+      {
+        "name":"ping",
+        "requestFullName":"com.axgrid.game.rpc.OpPing",
+        "requestName":"OpPing",
+        "responseFullName":"com.axgrid.game.rpc.RpPing",
+        "responseName":"RpPing",
+        "description":"Пинг",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":false
+      }
+    ]
+  },
+  {
+    "errorCodeFieldName":"errorCode",
+    "correlationIdFieldName":"correlationId",
+    "successFieldName":"success",
+    "errorTextFieldName":"errorText",
+    "sessionFieldName":"session",
+    "trxFieldName":"trx",
+    "metricsEnabled":true,
+    "name":"User",
+    "description":"User Service",
+    "fullName":"com.axgrid.game.user.service.AxGameRPCUser",
+    "requestObject":"Request",
+    "responseObject":"Response",
+    "requestObjectFullName":"com.axgrid.game.rpc.Request",
+    "responseObjectFullName":"com.axgrid.game.rpc.Response",
+    "methods":[
+      {
+        "name":"signUp",
+        "requestFullName":"com.axgrid.game.rpc.OpUserSignUp",
+        "requestName":"OpUserSignUp",
+        "responseFullName":"com.axgrid.game.rpc.RpUserSignUp",
+        "responseName":"RpUserSignUp",
+        "description":"Зарегистрировать пользователя",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"getUser",
+        "requestFullName":"com.axgrid.game.rpc.OpUserGet",
+        "requestName":"OpUserGet",
+        "responseFullName":"com.axgrid.game.rpc.RpUserGet",
+        "responseName":"RpUserGet",
+        "description":"Получить данные о пользователе",
+        "loginRequired":true,
+        "trxRequired":false,
+        "emptyRequest":true
+      },
+      {
+        "name":"contactSupport",
+        "requestFullName":"com.axgrid.game.rpc.OpContactSupport",
+        "requestName":"OpContactSupport",
+        "responseFullName":"com.axgrid.game.rpc.RpContactSupport",
+        "responseName":"RpContactSupport",
+        "description":"Отправить сообщениие в службу поддержки",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"updateUser",
+        "requestFullName":"com.axgrid.game.rpc.OpUserUpdate",
+        "requestName":"OpUserUpdate",
+        "responseFullName":"com.axgrid.game.rpc.RpUserUpdate",
+        "responseName":"RpUserUpdate",
+        "description":"Обновить пользователя",
+        "loginRequired":true,
+        "trxRequired":false,
+        "emptyRequest":false
+      }
+    ]
+  },
+  {
+    "errorCodeFieldName":"errorCode",
+    "correlationIdFieldName":"correlationId",
+    "successFieldName":"success",
+    "errorTextFieldName":"errorText",
+    "sessionFieldName":"session",
+    "trxFieldName":"trx",
+    "metricsEnabled":true,
+    "name":"Balance",
+    "description":"Balance Service",
+    "fullName":"com.axgrid.game.billing.service.AxGameBalanceRPCService",
+    "requestObject":"Request",
+    "responseObject":"Response",
+    "requestObjectFullName":"com.axgrid.game.rpc.Request",
+    "responseObjectFullName":"com.axgrid.game.rpc.Response",
+    "methods":[
+      {
+        "name":"getBalance",
+        "requestFullName":"com.axgrid.game.rpc.OpBalanceGet",
+        "requestName":"OpBalanceGet",
+        "responseFullName":"com.axgrid.game.rpc.RpBalanceGet",
+        "responseName":"RpBalanceGet",
+        "description":"Получить данные о балансе пользователе",
+        "loginRequired":true,
         "trxRequired":false,
         "emptyRequest":true
       }
@@ -43,80 +137,7 @@
     "errorTextFieldName":"errorText",
     "sessionFieldName":"session",
     "trxFieldName":"trx",
-    "name":"AxGameRPCSession",
-    "description":"Session Service",
-    "fullName":"com.axgrid.game.session.AxGameRPCSession",
-    "requestObject":"Request",
-    "responseObject":"Response",
-    "requestObjectFullName":"com.axgrid.game.rpc.Request",
-    "responseObjectFullName":"com.axgrid.game.rpc.Response",
-    "methods":[
-      {
-        "name":"valid",
-        "requestFullName":"com.axgrid.game.rpc.OpAuthValid",
-        "requestName":"OpAuthValid",
-        "responseFullName":"com.axgrid.game.rpc.RpAuthValid",
-        "responseName":"RpAuthValid",
-        "loginRequired":false,
-        "trxRequired":false,
-        "emptyRequest":false
-      },
-      {
-        "name":"uuid",
-        "requestFullName":"com.axgrid.game.rpc.OpAuthNew",
-        "requestName":"OpAuthNew",
-        "responseFullName":"com.axgrid.game.rpc.RpAuthNew",
-        "responseName":"RpAuthNew",
-        "loginRequired":false,
-        "trxRequired":false,
-        "emptyRequest":false
-      },
-      {
-        "name":"auth",
-        "requestFullName":"com.axgrid.game.rpc.OpAuthUuid",
-        "requestName":"OpAuthUuid",
-        "responseFullName":"com.axgrid.game.rpc.RpAuthUuid",
-        "responseName":"RpAuthUuid",
-        "loginRequired":false,
-        "trxRequired":false,
-        "emptyRequest":false
-      }
-    ]
-  },
-  {
-    "errorCodeFieldName":"errorCode",
-    "correlationIdFieldName":"correlationId",
-    "successFieldName":"success",
-    "errorTextFieldName":"errorText",
-    "sessionFieldName":"session",
-    "trxFieldName":"trx",
-    "name":"AxGameRPCUser",
-    "description":"User Service",
-    "fullName":"com.axgrid.game.user.service.AxGameRPCUser",
-    "requestObject":"Request",
-    "responseObject":"Response",
-    "requestObjectFullName":"com.axgrid.game.rpc.Request",
-    "responseObjectFullName":"com.axgrid.game.rpc.Response",
-    "methods":[
-      {
-        "name":"user",
-        "requestFullName":"com.axgrid.game.rpc.OpUser",
-        "requestName":"OpUser",
-        "responseFullName":"com.axgrid.game.rpc.RpUser",
-        "responseName":"RpUser",
-        "loginRequired":true,
-        "trxRequired":false,
-        "emptyRequest":false
-      }
-    ]
-  },
-  {
-    "errorCodeFieldName":"errorCode",
-    "correlationIdFieldName":"correlationId",
-    "successFieldName":"success",
-    "errorTextFieldName":"errorText",
-    "sessionFieldName":"session",
-    "trxFieldName":"trx",
+    "metricsEnabled":true,
     "name":"AxGameRPCKv",
     "description":"Kv RPC",
     "fullName":"com.axgrid.game.kv.service.AxGameRPCKv",
@@ -126,13 +147,200 @@
     "responseObjectFullName":"com.axgrid.game.rpc.Response",
     "methods":[
       {
-        "name":"kv",
-        "requestFullName":"com.axgrid.game.rpc.OpKv",
-        "requestName":"OpKv",
-        "responseFullName":"com.axgrid.game.rpc.RpKv",
-        "responseName":"RpKv",
+        "name":"getCounter",
+        "requestFullName":"com.axgrid.game.rpc.OpCounterGet",
+        "requestName":"OpCounterGet",
+        "responseFullName":"com.axgrid.game.rpc.RpCounterGet",
+        "responseName":"RpCounterGet",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"setCounter",
+        "requestFullName":"com.axgrid.game.rpc.OpCounterSet",
+        "requestName":"OpCounterSet",
+        "responseFullName":"com.axgrid.game.rpc.RpCounterSet",
+        "responseName":"RpCounterSet",
+        "description":"",
         "loginRequired":true,
         "trxRequired":true,
+        "emptyRequest":false
+      }
+    ]
+  },
+  {
+    "errorCodeFieldName":"errorCode",
+    "correlationIdFieldName":"correlationId",
+    "successFieldName":"success",
+    "errorTextFieldName":"errorText",
+    "sessionFieldName":"session",
+    "trxFieldName":"trx",
+    "metricsEnabled":true,
+    "name":"Auth",
+    "description":"Session Service",
+    "fullName":"com.axgrid.game.session.AxGameRPCSession",
+    "requestObject":"Request",
+    "responseObject":"Response",
+    "requestObjectFullName":"com.axgrid.game.rpc.Request",
+    "responseObjectFullName":"com.axgrid.game.rpc.Response",
+    "methods":[
+      {
+        "name":"signIn",
+        "requestFullName":"com.axgrid.game.rpc.OpAuthSignIn",
+        "requestName":"OpAuthSignIn",
+        "responseFullName":"com.axgrid.game.rpc.RpAuthSignIn",
+        "responseName":"RpAuthSignIn",
+        "description":"Получить новую сессию",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"signOut",
+        "requestFullName":"com.axgrid.game.rpc.OpAuthSignOut",
+        "requestName":"OpAuthSignOut",
+        "responseFullName":"com.axgrid.game.rpc.RpAuthSignOut",
+        "responseName":"RpAuthSignOut",
+        "description":"Закрыть сессию",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":true
+      },
+      {
+        "name":"guestToken",
+        "requestFullName":"com.axgrid.game.rpc.OpAuthGuestToken",
+        "requestName":"OpAuthGuestToken",
+        "responseFullName":"com.axgrid.game.rpc.RpAuthGuestToken",
+        "responseName":"RpAuthGuestToken",
+        "description":"Получить UUID от сервера",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":true
+      },
+      {
+        "name":"sessionValidate",
+        "requestFullName":"com.axgrid.game.rpc.OpAuthValid",
+        "requestName":"OpAuthValid",
+        "responseFullName":"com.axgrid.game.rpc.RpAuthValid",
+        "responseName":"RpAuthValid",
+        "description":"Проверить валидность сессии",
+        "loginRequired":false,
+        "trxRequired":false,
+        "emptyRequest":false
+      }
+    ]
+  },
+  {
+    "errorCodeFieldName":"errorCode",
+    "correlationIdFieldName":"correlationId",
+    "successFieldName":"success",
+    "errorTextFieldName":"errorText",
+    "sessionFieldName":"session",
+    "trxFieldName":"trx",
+    "metricsEnabled":true,
+    "name":"Rank",
+    "description":"Rank RPC",
+    "fullName":"com.axgrid.game.rank.service.AxGameRankRPCService",
+    "requestObject":"Request",
+    "responseObject":"Response",
+    "requestObjectFullName":"com.axgrid.game.rpc.Request",
+    "responseObjectFullName":"com.axgrid.game.rpc.Response",
+    "methods":[
+      {
+        "name":"getRank",
+        "requestFullName":"com.axgrid.game.rpc.OpRankGet",
+        "requestName":"OpRankGet",
+        "responseFullName":"com.axgrid.game.rpc.RpRankGet",
+        "responseName":"RpRankGet",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"setRank",
+        "requestFullName":"com.axgrid.game.rpc.OpRankSet",
+        "requestName":"OpRankSet",
+        "responseFullName":"com.axgrid.game.rpc.RpRankSet",
+        "responseName":"RpRankSet",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":true,
+        "emptyRequest":false
+      }
+    ]
+  },
+  {
+    "errorCodeFieldName":"errorCode",
+    "correlationIdFieldName":"correlationId",
+    "successFieldName":"success",
+    "errorTextFieldName":"errorText",
+    "sessionFieldName":"session",
+    "trxFieldName":"trx",
+    "metricsEnabled":true,
+    "name":"Spin",
+    "description":"Spin RPC",
+    "fullName":"com.axgrid.game.spin.service.AxGameSpinRPCService",
+    "requestObject":"Request",
+    "responseObject":"Response",
+    "requestObjectFullName":"com.axgrid.game.rpc.Request",
+    "responseObjectFullName":"com.axgrid.game.rpc.Response",
+    "methods":[
+      {
+        "name":"getSpin",
+        "requestFullName":"com.axgrid.game.rpc.OpSpinGet",
+        "requestName":"OpSpinGet",
+        "responseFullName":"com.axgrid.game.rpc.RpSpinGet",
+        "responseName":"RpSpinGet",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":true,
+        "emptyRequest":false
+      },
+      {
+        "name":"takeSpinPack",
+        "requestFullName":"com.axgrid.game.rpc.OpSpinPackTake",
+        "requestName":"OpSpinPackTake",
+        "responseFullName":"com.axgrid.game.rpc.RpSpinPackTake",
+        "responseName":"RpSpinPackTake",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"takeSpin",
+        "requestFullName":"com.axgrid.game.rpc.OpSpinTake",
+        "requestName":"OpSpinTake",
+        "responseFullName":"com.axgrid.game.rpc.RpSpinTake",
+        "responseName":"RpSpinTake",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":false,
+        "emptyRequest":true
+      },
+      {
+        "name":"getSpinPack",
+        "requestFullName":"com.axgrid.game.rpc.OpSpinPackGet",
+        "requestName":"OpSpinPackGet",
+        "responseFullName":"com.axgrid.game.rpc.RpSpinPackGet",
+        "responseName":"RpSpinPackGet",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":false,
+        "emptyRequest":false
+      },
+      {
+        "name":"enterGame",
+        "requestFullName":"com.axgrid.game.rpc.OpGameEnter",
+        "requestName":"OpGameEnter",
+        "responseFullName":"com.axgrid.game.rpc.RpGameEnter",
+        "responseName":"RpGameEnter",
+        "description":"",
+        "loginRequired":true,
+        "trxRequired":false,
         "emptyRequest":false
       }
     ]
