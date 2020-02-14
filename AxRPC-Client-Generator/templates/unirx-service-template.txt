@@ -11,6 +11,24 @@ namespace {{opt.service_ns}} {
          public static string Url {get;set;} {{ if default_service_url && default_service_url != "" }} = {{ default_service_url }};{{ end }}
          public static long CorrelationId { get; set; }
          public static string Session { get; set; }
+         public static Action OnSessionTerminatedEvent;
+         public static  Action<bool> OnDisconnectStatusChangeEvent;
+         public static bool Connected {get;set;} = true;
+         private static webErrorCount = 0; 
+         public static int WebErrorCount { 
+            get { return webErrorCount; }
+            set {
+                webErrorCount = value;
+                if (value > 5 && Connected) {
+                    Connected = false;
+                    OnDisconnectStatusChangeEvent(Connected);
+                }
+                if (value == 0 && !Connected) {
+                    Connected = true;
+                    OnDisconnectStatusChangeEvent(Connected);
+                }
+            }
+        }
     }
     
     public class AxRPCException : System.Exception {
@@ -45,10 +63,12 @@ namespace {{opt.service_ns}} {
              .Select(bytes => {
                  var response = {{ service.response_object }}.Parser.ParseFrom(bytes);
                  if (!response.Success && response.ErrorCode >= 500) throw new AxRPCRetryException(response.ErrorText, response.ErrorCode);
+                 if (!response.Success && response.ErrorCode == 401) { AxServiceConfigurations.Session = string.Empty; AxServiceConfigurations.OnSessionTerminatedEvent?.Invoke(); }
                  if (!response.Success)  throw new AxRPCException(response.ErrorText, response.ErrorCode);
+                 AxServiceConfigurations.WebErrorCount = 0;
                  return response.{{ method.response_name }};
              })
-             .OnErrorRetry((WWWErrorException ex) => Log.Warn("WWWErrorException:{}", ex.Message), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}))
+             .OnErrorRetry((WWWErrorException ex) => { Log.Warn("WWWErrorException:{}", ex.Message); AxServiceConfigurations.WebErrorCount++; }, {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}))
              .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}));
         }
         

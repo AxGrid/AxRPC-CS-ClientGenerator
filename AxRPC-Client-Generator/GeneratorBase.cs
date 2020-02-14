@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using AxRPCClientGenerator.Data;
 using Newtonsoft.Json;
+using Scriban;
 using SimpleLogger;
 
 namespace AxRPCClientGenerator {
@@ -12,9 +13,11 @@ namespace AxRPCClientGenerator {
 
         protected List<Service> Services { get; set; }
         
-        public GeneratorBase(Options o) {
-            
-            var t = TemplateLoader.GetTemplate(GetServiceTemplate(o.Template));
+        public GeneratorBase(Options o)
+        {
+            var t = o.Template == Options.Templates.Ext ? 
+                TemplateLoader.GetTemplate(o.TemplateFilePath, true) : 
+                TemplateLoader.GetTemplate(GetServiceTemplate(o.Template));
             Services = JsonConvert.DeserializeObject<List<Service>> (o.JsonData);
             Logger.Debug.Log($"Found {Services.Count} service");
 

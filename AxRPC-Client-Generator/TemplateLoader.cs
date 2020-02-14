@@ -24,8 +24,14 @@ namespace AxRPCClientGenerator {
             return null;
         }
         
-        public static Template GetTemplate(string name) {
-             return Template.Parse(GetTemplateString(name));
+        public static string GetTemplateStringFromFS(string path) {
+            Logger.Debug.Log($"Load template from path {path}");
+            return File.ReadAllText(path);
+        }
+        
+        public static Template GetTemplate(string name, bool fs = false) {
+              
+             return Template.Parse(fs ? GetTemplateStringFromFS(name) : GetTemplateString(name));
         }
     }
     
