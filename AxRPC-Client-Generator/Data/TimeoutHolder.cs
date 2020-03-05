@@ -4,6 +4,6 @@ namespace AxRPCClientGenerator.Data
     {
         public int Timeout { get; set; }
         public int Retry { get; set; }
-        public int RetryTimeout { get; set; }
+        public int TimeoutRetry { get; set; } = 10;
     }
 }
