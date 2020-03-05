@@ -14,7 +14,7 @@ namespace {{opt.service_ns}} {
          public static Action OnSessionTerminatedEvent;
          public static  Action<bool> OnDisconnectStatusChangeEvent;
          public static bool Connected {get;set;} = true;
-         private static webErrorCount = 0; 
+         private static int webErrorCount = 0; 
          public static int WebErrorCount { 
             get { return webErrorCount; }
             set {
@@ -60,6 +60,7 @@ namespace {{opt.service_ns}} {
                 {{ method.request_name }} = {{ if method.empty_request }}new {{ method.request_name }}(){{ else }}request{{ end }}
             };
             return ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url, r.ToByteArray(), new Dictionary<string, string> { {"Content-Type", "application/octet-stream"} })
+             .Timeout(TimeSpan.FromMilliseconds({{ service.timeout.timeout }}))
              .Select(bytes => {
                  var response = {{ service.response_object }}.Parser.ParseFrom(bytes);
                  if (!response.Success && response.ErrorCode >= 500) throw new AxRPCRetryException(response.ErrorText, response.ErrorCode);
@@ -68,8 +69,8 @@ namespace {{opt.service_ns}} {
                  AxServiceConfigurations.WebErrorCount = 0;
                  return response.{{ method.response_name }};
              })
-             .OnErrorRetry((WWWErrorException ex) => { Log.Warn("WWWErrorException:{}", ex.Message); AxServiceConfigurations.WebErrorCount++; }, {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}))
-             .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ opt.retry_count }}, System.TimeSpan.FromMilliseconds({{ opt.retry_timeout }}));
+             .OnErrorRetry((WWWErrorException ex) => { Log.Warn("WWWErrorException:{}", ex.Message); AxServiceConfigurations.WebErrorCount++; }, {{ service.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ service.timeout.retry_timeout }}))
+             .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ service.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ {{ service.timeout.retry_timeout }}));
         }
         
         /// <summary>

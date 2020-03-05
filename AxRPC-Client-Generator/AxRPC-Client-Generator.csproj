@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Data\Method.cs" />
     <Compile Include="Data\Service.cs" />
+    <Compile Include="Data\TimeoutHolder.cs" />
     <Compile Include="GeneratorBase.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
