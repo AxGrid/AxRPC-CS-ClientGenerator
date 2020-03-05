@@ -70,7 +70,7 @@ namespace {{opt.service_ns}} {
                  return response.{{ method.response_name }};
              })
              .OnErrorRetry((WWWErrorException ex) => { Log.Warn("WWWErrorException:{}", ex.Message); AxServiceConfigurations.WebErrorCount++; }, {{ service.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ service.timeout.retry_timeout }}))
-             .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ service.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ {{ service.timeout.retry_timeout }}));
+             .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ service.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ service.timeout.retry_timeout }}));
         }
         
         /// <summary>
