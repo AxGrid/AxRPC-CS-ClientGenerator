@@ -32,6 +32,9 @@ namespace AxRPCClientGenerator {
         [Option("serviceName", Required = false, Default = "", HelpText = "Create single Service class")]
         public string ServiceName { get; set; }
         
+        [Option('e', "excludeCommons", Required = false, Default = false, HelpText = "Exclude Configuration, Exceptions, etc.")]
+        public bool ExcludeCommons { get; set; }
+        
         public string JsonData { get; set; }
 
         public enum Templates {

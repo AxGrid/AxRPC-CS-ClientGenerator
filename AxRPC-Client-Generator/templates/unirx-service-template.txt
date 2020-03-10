@@ -7,6 +7,8 @@ using System;
 
 namespace {{opt.service_ns}} {
     
+    {{ if !opt.exclude_commons }}
+    
     public static class AxServiceConfigurations {
          public static string Url {get;set;} {{ if default_service_url && default_service_url != "" }} = {{ default_service_url }};{{ end }}
          public static long CorrelationId { get; set; }
@@ -42,6 +44,7 @@ namespace {{opt.service_ns}} {
 
     public delegate void DAxRPCError(AxRPCException error);
     public delegate void DAxRPCResult<T>(T result);
+    {{ end }}
 
 {{ for service in services }}
     public class {{service.name}} {
