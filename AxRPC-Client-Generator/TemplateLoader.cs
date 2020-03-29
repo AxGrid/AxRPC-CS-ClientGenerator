@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using Scriban;
+using Scriban.Runtime;
 using SimpleLogger;
 
 namespace AxRPCClientGenerator {
@@ -30,9 +31,12 @@ namespace AxRPCClientGenerator {
         }
         
         public static Template GetTemplate(string name, bool fs = false) {
-              
-             return Template.Parse(fs ? GetTemplateStringFromFS(name) : GetTemplateString(name));
+            
+            
+            return Template.Parse(fs ? GetTemplateStringFromFS(name) : GetTemplateString(name));
         }
+        
+         
     }
     
 

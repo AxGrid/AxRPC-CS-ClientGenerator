@@ -4,6 +4,7 @@ using System.Linq;
 using AxRPCClientGenerator.Data;
 using Newtonsoft.Json;
 using Scriban;
+using Scriban.Runtime;
 using SimpleLogger;
 
 namespace AxRPCClientGenerator {
@@ -29,16 +30,27 @@ namespace AxRPCClientGenerator {
                 Services = new List<Service>(new [] {s});
             }
 
-
-            Services.ForEach(service =>
-            {
-                Logger.Log($"{service.ToString()}");
-            });
+            Services.ForEach(service => {  Logger.Log($"{service.ToString()}"); });
             
-            var str = t.Render(new {
+            var scriptObject1 = new ScriptObject();
+            scriptObject1.Import(typeof(TemplateFunctions));
+            scriptObject1.Import(new
+            {
                 Services,
                 Opt = o
             });
+            
+            var context = new TemplateContext();
+            context.PushGlobal(scriptObject1);  
+            
+            
+            var str = t.Render(context);
+            
+            
+            // var str = t.Render(new {
+            //     Services,
+            //     Opt = o
+            // });
             Logger.Debug.Log(str);
             if (string.IsNullOrEmpty(o.Output)) return;
             using (var sw = new StreamWriter(o.Output)) {

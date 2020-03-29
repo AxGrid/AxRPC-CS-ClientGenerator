@@ -26,6 +26,8 @@ namespace AxRPCClientGenerator {
                     new GeneratorBase(o);
                 }
             });
+            
+            
 
         }
     }

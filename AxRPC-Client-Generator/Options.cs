@@ -8,8 +8,8 @@ namespace AxRPCClientGenerator {
         [Option('j', "json", Required = true, HelpText = "Path to json")]
         public string Json { get; set; }
 
-        [Option('p', "entryPoint", Required = true, HelpText = "Add additional Path")]
-        public string EntryPointPath { get; set; } = "";
+        [Option('p', "entryPoint", Required = false, Default = "", HelpText = "Add additional Path")]
+        public string EntryPointPath { get; set; }
 
         [Option('t', "template", Required = false, Default = Templates.UniRx, HelpText = "Template")]
         public Templates Template { get; set; }
@@ -43,7 +43,8 @@ namespace AxRPCClientGenerator {
         public enum Templates {
             CS,
             UniRx,
-            Ext
+            Ext,
+            JS
         }
         
     }
