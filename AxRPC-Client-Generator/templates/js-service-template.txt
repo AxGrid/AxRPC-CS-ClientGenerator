@@ -44,7 +44,8 @@ export class {{service.name }} {
             {{ if method.trx_required && service.trx_field_name }}ro.{{ service.trx_field_name }} = trx;{{ end }}
             ro.{{ method.request_name | un_capitalize }} = {{ if method.empty_request }}{};{{ else }}request;{{ end }}
             const bytes = inout.Request.encode(ro).finish(); 
-            return axios.post(this.params.url, new Uint8Array(bytes), {
+            if (this.params.debug)  console.log("REQUEST to:[{{ opt.entry_point_path }}] {{method}}(", ro.{{ method.request_name | un_capitalize }} ,")");
+            return axios.post(this.params.url+"{{ opt.entry_point_path }}"", new Uint8Array(bytes), {
                                headers: { 'Content-Type': 'application/octet-stream'},
                                responseType: "arraybuffer"
             }).then(response => {
@@ -54,13 +55,13 @@ export class {{service.name }} {
                            if (this.params.debug) console.log("RESPONSE:", po);
                            if (po.errorCode) {
                                 if (po.errorCode === 401 && this.params.store) this.params.store.dispatch({type:"CLEAR_SESSION"}); 
-                                throw new AxRPCError(po.errorText, po.errorCode); // {code: po.errorCode, error: po.errorText};
+                                throw new AxRPCError(po.errorText, po.errorCode); 
                            }
                            return po.{{ method.response_name | un_capitalize }};
                     } else {
-                        throw {code: response.status, error: "Http Error"};
+                        throw new AxRPCError("Http Error", response.status); 
                     }
-                }, error => { throw {code: 1, error: "Network Error"} });
+                }, error => { throw new AxRPCError("Network Error", 1)});
         }
 {{ end }}
 {{ end }}

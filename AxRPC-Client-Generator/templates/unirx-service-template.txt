@@ -72,7 +72,10 @@ namespace {{opt.service_ns}} {
                  AxServiceConfigurations.WebErrorCount = 0;
                  return response.{{ method.response_name }};
              })
-             .OnErrorRetry((WWWErrorException ex) => { Log.Warn("WWWErrorException:{}", ex.Message); AxServiceConfigurations.WebErrorCount++; }, {{ method.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ method.timeout.timeout_retry }}))
+             .OnErrorRetry((WWWErrorException ex) => { 
+                if (ex.StatusCode == HttpStatusCode.Unauthorized) {AxServiceConfigurations.Session = string.Empty; AxServiceConfigurations.OnSessionTerminatedEvent?.Invoke();}
+                Log.Warn("WWWErrorException:{}", ex.Message); 
+                AxServiceConfigurations.WebErrorCount++; }, {{ method.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ method.timeout.timeout_retry }}))
              .OnErrorRetry((AxRPCRetryException ex) => Log.Warn("AxRPCRetryException:{}", ex.Message), {{ method.timeout.retry }}, System.TimeSpan.FromMilliseconds({{ method.timeout.timeout_retry }}));
         }
         

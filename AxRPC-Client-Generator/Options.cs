@@ -17,7 +17,7 @@ namespace AxRPCClientGenerator {
         [Option('f', "file-template", Required = false, Default = "", HelpText = "External Template File")]
         public string TemplateFilePath { get; set; }
         
-        [Option('p', "protobufNs", Required = false, Default = "AxGrid.Internal.Proto", HelpText = "Default protobuf namespace")]
+        [Option('n', "protobufNs", Required = false, Default = "AxGrid.Internal.Proto", HelpText = "Default protobuf namespace")]
         public string ProtobufNs { get; set; }
 
         [Option('s', "serviceNs", Required = false, Default = "AxGrid.Internal", HelpText = "Default service namespace")]
