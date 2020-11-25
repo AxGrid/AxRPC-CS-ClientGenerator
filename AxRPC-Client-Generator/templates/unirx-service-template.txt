@@ -3,6 +3,7 @@ using Google.Protobuf;
 using UniRx;
 using System.Collections.Generic;
 using System;
+using System.Net;
 {{ if opt.protobuf_ns && opt.protobuf_ns != "" }}using {{ opt.protobuf_ns }};{{ end }}
 
 namespace {{opt.service_ns}} {
@@ -23,11 +24,11 @@ namespace {{opt.service_ns}} {
                 webErrorCount = value;
                 if (value > 5 && Connected) {
                     Connected = false;
-                    OnDisconnectStatusChangeEvent(Connected);
+                    OnDisconnectStatusChangeEvent?.Invoke(Connected);
                 }
                 if (value == 0 && !Connected) {
                     Connected = true;
-                    OnDisconnectStatusChangeEvent(Connected);
+                    OnDisconnectStatusChangeEvent?.Invoke(Connected);
                 }
             }
         }
