@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxRPC-Client-Generator", "AxRPC-Client-Generator\AxRPC-Client-Generator.csproj", "{1576ECAA-2406-412C-876E-0FE04E922C84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxRPC-Event-Generator", "AxRPC-Event-Generator\AxRPC-Event-Generator.csproj", "{E801DEC6-0CC3-4852-881D-958F1A76BA23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{1576ECAA-2406-412C-876E-0FE04E922C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1576ECAA-2406-412C-876E-0FE04E922C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1576ECAA-2406-412C-876E-0FE04E922C84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E801DEC6-0CC3-4852-881D-958F1A76BA23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E801DEC6-0CC3-4852-881D-958F1A76BA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E801DEC6-0CC3-4852-881D-958F1A76BA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E801DEC6-0CC3-4852-881D-958F1A76BA23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

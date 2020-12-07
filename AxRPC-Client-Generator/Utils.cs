@@ -18,7 +18,6 @@ namespace AxRPCClientGenerator {
                 Environment.Exit(5);
             }
             return null;
-
         }
     }
 }

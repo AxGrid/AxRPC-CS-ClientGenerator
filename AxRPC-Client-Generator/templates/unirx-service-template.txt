@@ -63,6 +63,7 @@ namespace {{opt.service_ns}} {
                 {{ if method.trx_required && service.trx_field_name }}{{ service.trx_field_name | string.capitalize }} = trx,{{ end }}
                 {{ method.request_name }} = {{ if method.empty_request }}new {{ method.request_name }}(){{ else }}request{{ end }}
             };
+            {{ if service.debug }}Log.Debug("AxRPCRequest {{ method.name | string.capitalize }}({});", r);{{ end }}
             return ObservableWWW.PostAndGetBytes(AxServiceConfigurations.Url+"{{ opt.entry_point_path }}", r.ToByteArray(), new Dictionary<string, string> { {"Content-Type", "application/octet-stream"} })
              .Timeout(TimeSpan.FromMilliseconds({{ method.timeout.timeout }}))
              .Select(bytes => {

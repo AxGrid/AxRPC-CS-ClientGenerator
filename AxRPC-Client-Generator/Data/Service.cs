@@ -22,7 +22,10 @@ namespace AxRPCClientGenerator.Data {
         public string Description { get; set; }
 
         public List<Method> Methods { get; set; }
-
+        
+        
+        public bool Debug { get; set; }
+        
         public override string ToString() {
             return
                 $"{Name} ({ErrorCodeFieldName} / {CorrelationIdFieldName} / {SuccessFieldName} / {ErrorTextFieldName} / {TrxFieldName}) Methods:{Methods.Count}";

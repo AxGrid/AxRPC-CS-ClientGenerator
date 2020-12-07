@@ -27,6 +27,7 @@ namespace AxRPCClientGenerator {
                 var s = Services[0];
                 s.Name = o.ServiceName;
                 s.Methods = methods;
+                s.Debug = o.Debug;
                 Services = new List<Service>(new [] {s});
             }
 
@@ -42,15 +43,7 @@ namespace AxRPCClientGenerator {
             
             var context = new TemplateContext();
             context.PushGlobal(scriptObject1);  
-            
-            
             var str = t.Render(context);
-            
-            
-            // var str = t.Render(new {
-            //     Services,
-            //     Opt = o
-            // });
             Logger.Debug.Log(str);
             if (string.IsNullOrEmpty(o.Output)) return;
             using (var sw = new StreamWriter(o.Output)) {
